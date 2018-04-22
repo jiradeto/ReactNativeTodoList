@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "text": "Practicing Algorithms and Data Structure",
+    "completed": false
+  },
+  {
+    "id": 2,
+    "text": "Riding a bicycle",
+    "completed": false
+  },
+  {
+    "id": 3,
+    "text": "Shopping food at local shop",
+    "completed": true
+  },
+  {
+    "id": 4,
+    "text": "Listening new release song from Maroon5",
+    "completed": false
+  }
+]
