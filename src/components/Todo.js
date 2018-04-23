@@ -14,17 +14,6 @@ export default class TodoApp extends Component {
   };
 
   onAddTask() {
-    // this.setState(prevState => ({
-    //   tasks: [
-    //     ...prevState.tasks,
-    //     {
-    //       id: prevState.tasks.length + 1,
-    //       text: this.state.newTaskName,
-    //       completed: false
-    //     }
-    //   ]
-    // }));
-
     this.setState({
       tasks: [
         ...this.state.tasks,
@@ -35,17 +24,6 @@ export default class TodoApp extends Component {
         }
       ]
     });
-
-    // this.setState(prev => ({
-    //   tasks: [
-    //     ...prev.tasks,
-    //     {
-    //       id: prev.tasks.length + 1,
-    //       text: this.state.newTaskName,
-    //       completed: false
-    //     }
-    //   ]
-    // }));
   }
 
   onPressFilter(index) {
@@ -69,7 +47,7 @@ export default class TodoApp extends Component {
         break;
       case 2:
         newData = this.state.tasks.filter(d => {
-          return d.completed === true;
+          return d.completed;
         });
         this.setState({
           tasks: newData
@@ -166,7 +144,6 @@ const styles = StyleSheet.create({
     flex: 0.8
   },
   container: {
-    paddingTop: 16,
     flex: 1
   },
   addSection: {
@@ -178,6 +155,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   listSection: {
+    backgroundColor: 'white',
     flex: 8
   }
 });

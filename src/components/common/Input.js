@@ -4,6 +4,7 @@ import { StyleSheet, TextInput } from 'react-native';
 export default (Input = props => {
   return (
     <TextInput
+      secureTextEntry={props.secureTextEntry}
       onChangeText={props.onChangeText}
       value={props.value}
       style={[styles.input, props.style]}

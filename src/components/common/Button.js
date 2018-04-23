@@ -14,11 +14,12 @@ export default (Button = props => {
 
 const styles = StyleSheet.create({
   button: {
+    
     padding: 10,
     borderRadius: 10,
     borderColor: '#8AFFC4',
     backgroundColor: '#28D47E',
-    borderWidth: 1,
+    borderWidth: 1,    
     alignSelf: 'flex-end'
   },
   buttonLabel: {
