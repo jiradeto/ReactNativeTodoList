@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Alert } from 'react-native';
+import { USER_TOKEN } from '../App';
+import {
+  AsyncStorage,
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  Alert
+} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
 import Input from './common/Input';
@@ -12,6 +20,15 @@ export default class Auth extends Component {
     loading: false
   };
 
+  async saveToken(token) {
+    try {
+      console.log('AsyncStorage set TOKEN: ', token);
+      AsyncStorage.setItem(USER_TOKEN, token);
+    } catch (e) {
+      console.log('AsyncStorage error: saveToken ', e);
+    }
+  }
+
   onLogin() {
     this.setState({
       loading: true
@@ -19,9 +36,8 @@ export default class Auth extends Component {
 
     setTimeout(() => {
       const { username, password } = this.state;
-      console.log(username, password);
-
       if (username.toLowerCase() === 'user' && password === '1234') {
+        this.saveToken('example_token');
         Actions.todoApp({ type: 'reset' });
       } else {
         Alert.alert(
