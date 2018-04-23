@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ListView } from 'react-native';
+import { Text, View, StyleSheet, FlatList } from 'react-native';
 import { ButtonGroup } from 'react-native-elements';
 import Input from './common/Input';
 import Button from './common/Button';
@@ -14,15 +14,38 @@ export default class TodoApp extends Component {
   };
 
   onAddTask() {
-    const newTasks = this.state.tasks;
-    newTasks.push({
-      id: newTasks.length + 1,
-      text: this.state.newTaskName,
-      completed: false
+    // this.setState(prevState => ({
+    //   tasks: [
+    //     ...prevState.tasks,
+    //     {
+    //       id: prevState.tasks.length + 1,
+    //       text: this.state.newTaskName,
+    //       completed: false
+    //     }
+    //   ]
+    // }));
+
+    this.setState({
+      tasks: [
+        ...this.state.tasks,
+        {
+          id: this.state.tasks.length + 1,
+          text: this.state.newTaskName,
+          completed: false
+        }
+      ]
     });
 
-    this.setState({ tasks: newTasks });
-    this.onPressFilter(0);
+    // this.setState(prev => ({
+    //   tasks: [
+    //     ...prev.tasks,
+    //     {
+    //       id: prev.tasks.length + 1,
+    //       text: this.state.newTaskName,
+    //       completed: false
+    //     }
+    //   ]
+    // }));
   }
 
   onPressFilter(index) {
@@ -32,29 +55,45 @@ export default class TodoApp extends Component {
 
     switch (index) {
       case 0:
-        this.createDataSource(this.state.tasks);
+        this.setState({
+          tasks: data
+        });
         break;
       case 1:
         newData = this.state.tasks.slice().filter(d => {
           return d.completed === false;
         });
-        this.createDataSource(newData);
+        this.setState({
+          tasks: newData
+        });
         break;
       case 2:
         newData = this.state.tasks.filter(d => {
           return d.completed === true;
         });
-        this.createDataSource(newData);
+        this.setState({
+          tasks: newData
+        });
         break;
     }
   }
 
-  createDataSource(data) {
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2
+  _onPressItem = index => {
+    const newData = this.state.tasks.slice();
+    newData[index] = {
+      ...this.state.tasks[index],
+      completed: !this.state.tasks[index].completed
+    };
+    this.setState({
+      tasks: newData
     });
-    this.dataSource = ds.cloneWithRows(data);
-  }
+  };
+
+  _renderItem = ({ item, index }) => {
+    return <ListItem task={item} index={index} onPress={this._onPressItem} />;
+  };
+
+  _keyExtractor = (item, index) => item.id.toString();
 
   renderRow(task) {
     return (
@@ -69,7 +108,7 @@ export default class TodoApp extends Component {
 
   toggleStatus(index) {
     const newData = this.state.tasks.slice();
-    
+
     newData[index - 1] = {
       ...this.state.tasks[index - 1],
       completed: !this.state.tasks[index - 1].completed
@@ -78,13 +117,6 @@ export default class TodoApp extends Component {
       tasks: newData
     });
     this.createDataSource(newData);
-  }
-
-  componentWillMount() {
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2
-    });
-    this.dataSource = ds.cloneWithRows(this.state.tasks);
   }
 
   render() {
@@ -104,9 +136,10 @@ export default class TodoApp extends Component {
           </Button>
         </View>
         <View style={styles.listSection}>
-          <ListView
-            dataSource={this.dataSource}
-            renderRow={this.renderRow.bind(this)}
+          <FlatList
+            data={this.state.tasks}
+            keyExtractor={this._keyExtractor}
+            renderItem={this._renderItem}
           />
         </View>
         <ButtonGroup

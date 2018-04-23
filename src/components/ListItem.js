@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import { View, TouchableWithoutFeedback, Text, StyleSheet } from 'react-native';
 
-export default class ListItem extends Component {
+export default class ListItem extends PureComponent {
   render() {
     const { text, completed, id } = this.props.task;
     return (
-      <TouchableWithoutFeedback onPress={this.props.onPress}>
+      <TouchableWithoutFeedback
+        onPress={() => this.props.onPress(this.props.index)}
+      >
         <View style={styles.container}>
           <Text
             style={{
